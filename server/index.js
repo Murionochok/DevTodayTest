@@ -9,7 +9,6 @@ dotenv.config();
 
 app.use(cors());
 app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 4000;
@@ -51,7 +50,6 @@ app.post("/population", async (req, res) => {
 
 app.post("/flag", async (req, res) => {
   const { countryCode } = req.body;
-  console.log(countryCode);
   const request = await fetch(`${countriesShowBase}flag/images`, {
     method: "POST",
     headers: {
@@ -66,5 +64,4 @@ app.post("/flag", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
-  console.log(dateNagerBase);
 });
