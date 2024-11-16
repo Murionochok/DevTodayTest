@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
+import bodyParser from "body-parser";
 
 const app = express();
 dotenv.config();
@@ -9,10 +10,14 @@ dotenv.config();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 3000;
-const dateNagerBase = process.env.DATE_NAGER_API_BASE;
-const countriesShowBase = process.env.COUNTRIES_SHOW_API_BASE;
+const PORT = process.env.PORT || 4000;
+const dateNagerBase =
+  process.env.DATE_NAGER_API_BASE || "https://date.nager.at/api/v3/";
+const countriesShowBase =
+  process.env.COUNTRIES_SHOW_API_BASE ||
+  "https://countriesnow.space/api/v0.1/countries/";
 
 app.get("/all-countries", async (req, res) => {
   const response = await fetch(`${dateNagerBase}AvailableCountries`);
@@ -46,6 +51,7 @@ app.post("/population", async (req, res) => {
 
 app.post("/flag", async (req, res) => {
   const { countryCode } = req.body;
+  console.log(countryCode);
   const request = await fetch(`${countriesShowBase}flag/images`, {
     method: "POST",
     headers: {
@@ -60,4 +66,5 @@ app.post("/flag", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
+  console.log(dateNagerBase);
 });
